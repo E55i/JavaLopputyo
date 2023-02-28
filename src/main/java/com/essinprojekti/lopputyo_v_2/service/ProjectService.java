@@ -9,28 +9,30 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.essinprojekti.lopputyo_v_2.data.BlendedLearningStudent;
+import com.essinprojekti.lopputyo_v_2.data.Course;
 import com.essinprojekti.lopputyo_v_2.data.DayLearningStudent;
 import com.essinprojekti.lopputyo_v_2.data.OpenUasStudent;
 import com.essinprojekti.lopputyo_v_2.data.Student;
 
 @Service
-public class StudentService {
+public class ProjectService {
 
     private List<Student> students = new ArrayList<>();
 
-    public StudentService() {
-        // luodaan valmiiksi opiskelijoita
+    public ProjectService() {
+        // luodaan valmiiksi opiskelijoita ja kursseja
         students.add(new DayLearningStudent("Essi", 26, 12333, 2022));
         students.add(new DayLearningStudent("Keijo", 55, 65455, 2005));
         students.add(new BlendedLearningStudent("Asko", 27, 65423, 2023));
         students.add(new OpenUasStudent("Reijo", 45, 635763, 2014));
         students.add(new OpenUasStudent("Anja", 41, 6546546, 1998));
         students.add(new OpenUasStudent("Tuula", 37, 45677, 2009));
+        courses.add(new Course(1, "Java programming", 5));
+        courses.add(new Course(2, "Web programming", 4));
+        courses.add(new Course(3, "English", 3));
     }
 
-    // Tee hakuehotja niin että hakee vaikkapa ne opsikelijat joiden
-    // valmistumisvuosi on mennyt!
-
+    // toiminnot Student luokalle ja aliluokille
     public void addDayLearningStudent(DayLearningStudent s) {
         students.add(s);
     }
@@ -119,7 +121,7 @@ public class StudentService {
         return data;
     }
 
-    public boolean updateStudentName(Student student ) {
+    public boolean updateStudentName(Student student) {
         Student s = getStudentById(student.getStudentId());
 
         if (s != null) {
@@ -135,6 +137,71 @@ public class StudentService {
 
         if (s != null) {
             return students.remove(s);
+        } else {
+            return false;
+        }
+    }
+
+    // toiminnot Course luokalle LISÄÄ NÄMÄ REST CONTROLLERIIN
+
+    private List<Course> courses = new ArrayList<>();
+
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
+
+    public boolean addStudenToCourse(Student student, String courseName){
+        Student s = getStudentById(student.getStudentId());
+        Course c = getCourseByName(courseName);
+        if (s != null) {
+            c.setCourseStudents(s);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Course getCourseByName(String name) {
+        for (Course course : courses) {
+            if (course.getName() == name) { 
+                return course;
+            }
+        }
+        return null; 
+    }
+
+    public Course getCourseById(int id) {
+        for (Course course : courses) {
+            if (course.getCourseId() == id) { 
+                return course;
+            }
+        }
+        return null; 
+    }
+
+    public Course getAllCourses() {
+        for (Course course : courses) {
+            return course;
+        }
+        return null;
+    }
+
+    public boolean updateCourseName(Course course) {
+        Course c = getCourseById(course.getCourseId());
+
+        if (c != null) {
+            c.setName(course.getName());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removeCourse(int id) {
+        Course c = getCourseById(id);
+
+        if (c != null) {
+            return courses.remove(c);
         } else {
             return false;
         }

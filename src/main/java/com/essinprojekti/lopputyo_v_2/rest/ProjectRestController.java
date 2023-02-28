@@ -18,16 +18,16 @@ import com.essinprojekti.lopputyo_v_2.data.BlendedLearningStudent;
 import com.essinprojekti.lopputyo_v_2.data.DayLearningStudent;
 import com.essinprojekti.lopputyo_v_2.data.OpenUasStudent;
 import com.essinprojekti.lopputyo_v_2.data.Student;
-import com.essinprojekti.lopputyo_v_2.service.StudentService;
+import com.essinprojekti.lopputyo_v_2.service.ProjectService;
 
 @RestController
-public class StudentRestController {
+public class ProjectRestController {
 
-    StudentService sc;
+    ProjectService pc;
 
     @Autowired
-    public StudentRestController(StudentService sc) {
-        this.sc = sc;
+    public ProjectRestController(ProjectService pc) {
+        this.pc = pc;
     }
 
     // katso luentotallenne 25 kohta 27.00 (tee ensin saman luennon ohjeilla service
@@ -36,41 +36,41 @@ public class StudentRestController {
     // Hae kaikki opiskelijat
     @GetMapping("/students")
     public List<Student> getStudents() {
-        return sc.getAllStudents();// kutsutaan service-luokan metodia
+        return pc.getAllStudents();// kutsutaan service-luokan metodia
     }
 
     // Hae kaikki päiväopiskelijat
     @GetMapping("/daystudents")
     public Student getDayStudents() {
-        return sc.getAllDayStudents();
+        return pc.getAllDayStudents();
     }
 
     // Hae kaikki monimuotoopiskelijat
     @GetMapping("/blendedstudents")
     public Student getBlendedStudents() {
-        return sc.getAllBlendedStudents();
+        return pc.getAllBlendedStudents();
     }
 
     // Hae kaikki avoimen amkin opiskelijat
     @GetMapping("/ouasstudents")
     public Student getOuasStudents() {
-        return sc.getAllOuasStudents();
+        return pc.getAllOuasStudents();
     }
 
     @GetMapping("/graduatedstudents/{year}")
     public Student getGraduatedStudents(@PathVariable int year) {
-        return sc.getGraduatedStudents(year);
+        return pc.getGraduatedStudents(year);
     }
 
     @GetMapping("/data")
     public Map<String, Object> getStudentInfo() {
-        return sc.getBasicInfo();
+        return pc.getBasicInfo();
     }
 
     // Hae yksi opiskelija opiskelijanumerolla
     @GetMapping("/student/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
-        Student s = sc.getStudentById(id);
+        Student s = pc.getStudentById(id);
         if (s != null) {
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
@@ -80,25 +80,25 @@ public class StudentRestController {
 
     @PostMapping("/dl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
     public String addDayLearningStudent(@RequestBody DayLearningStudent student) {
-        sc.addDayLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
+        pc.addDayLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
         return "Day learning student added";
     }
 
     @PostMapping("/bl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
     public String addBlendedLearningStudent(@RequestBody BlendedLearningStudent student) {
-        sc.addBlendedLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
+        pc.addBlendedLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
         return "Blended learning student added";
     }
 
     @PostMapping("/oa_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
     public String addOpenAmkStudent(@RequestBody OpenUasStudent student) {
-        sc.addOpenUasStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
+        pc.addOpenUasStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
         return "Open amk student added";
     }
 
     @PutMapping("/updatename")
     public String updateName(@RequestBody Student student) {
-        if (sc.updateStudentName(student) == true) {
+        if (pc.updateStudentName(student) == true) {
             return "Name updated!";
         } else {
             return "Name couldn't be updated!";
@@ -107,7 +107,7 @@ public class StudentRestController {
 
     @DeleteMapping("/deletestudent")
     public String deleteStudent(@RequestBody Student student) {
-        sc.removeStudent(student.getStudentId());
+        pc.removeStudent(student.getStudentId());
         return "Product removed";
     }
     
