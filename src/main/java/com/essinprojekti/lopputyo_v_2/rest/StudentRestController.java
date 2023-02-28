@@ -110,6 +110,5 @@ public class StudentRestController {
         sc.removeStudent(student.getStudentId());
         return "Product removed";
     }
-
-    // Käytä kaikkia CRUD metodeita eli myös PÄIVITYS put
+    
 }
