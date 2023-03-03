@@ -68,6 +68,7 @@ public class ProjectRestController {
     }
 
     // Hae yksi opiskelija opiskelijanumerolla
+
     @GetMapping("/student/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
         Student s = pc.getStudentById(id);
@@ -80,20 +81,29 @@ public class ProjectRestController {
 
     @PostMapping("/dl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
     public String addDayLearningStudent(@RequestBody DayLearningStudent student) {
-        pc.addDayLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
-        return "Day learning student added";
+        if (pc.addDayLearningStudent(student) == true) {
+            return "Day learning student added";
+        }
+        return "Something went wrong!";// katso myös luento 25 kohta 30.15, virheen hallinnasta
+
     }
 
     @PostMapping("/bl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
     public String addBlendedLearningStudent(@RequestBody BlendedLearningStudent student) {
-        pc.addBlendedLearningStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
-        return "Blended learning student added";
+
+        if (pc.addBlendedLearningStudent(student) == true) {
+            return "Blended learning student added";
+        }
+        return "Something went wrong!";
     }
 
     @PostMapping("/oa_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
-    public String addOpenAmkStudent(@RequestBody OpenUasStudent student) {
-        pc.addOpenUasStudent(student);// katso myös luento 25 kohta 30.15, virheen hallinnasta
-        return "Open amk student added";
+    public String addOpenUasStudent(@RequestBody OpenUasStudent student) {
+
+        if (pc.addOpenUasStudent(student) == true) {
+            return "Open UAS student added";
+        }
+        return "Something went wrong!";
     }
 
     @PutMapping("/updatename")
@@ -110,5 +120,5 @@ public class ProjectRestController {
         pc.removeStudent(student.getStudentId());
         return "Product removed";
     }
-    
+
 }
