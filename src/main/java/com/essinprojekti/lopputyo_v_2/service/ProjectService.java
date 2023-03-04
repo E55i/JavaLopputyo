@@ -19,7 +19,7 @@ public class ProjectService {
     private List<Student> students = new ArrayList<>();
 
     public ProjectService() {
-        // luodaan valmiiksi opiskelijoita ja kursseja
+        // luodaan valmiiksi opiskelijoita
         students.add(new DayLearningStudent("Essi", 26, 12333, 2022));
         students.add(new DayLearningStudent("Keijo", 55, 65455, 2005));
         students.add(new BlendedLearningStudent("Asko", 27, 65423, 2023));
@@ -28,30 +28,29 @@ public class ProjectService {
         students.add(new OpenUasStudent("Tuula", 37, 45677, 2009));
     }
 
-    // toiminnot Student luokalle ja aliluokille
     public boolean addDayLearningStudent(DayLearningStudent s) {
-        try{
+        try {
             students.add(s);
             return true;
-        } catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean addBlendedLearningStudent(BlendedLearningStudent s) {
-        try{
+        try {
             students.add(s);
             return true;
-        } catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean addOpenUasStudent(OpenUasStudent s) {
-        try{
+        try {
             students.add(s);
             return true;
-        } catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -63,21 +62,26 @@ public class ProjectService {
 
     public Student getStudentById(int id) {
         for (Student student : students) {
-            if (student.getStudentId() == id) { // käydään läpi kaikki listan oliot
+            if (student.getStudentId() == id) {
                 return student;
             }
         }
-        return null; // Jos ei löydy, palauttaa null
+        return null;
     }
 
-    public Student getGraduatedStudents(int year) {
+    public List<Student> getGraduatedStudents(int year) {
+        List<Student> graduatedStudents = new ArrayList<>();
         OpenUasStudent o = new OpenUasStudent();
-        for (Student student : students) {
-            if (student.getClass() != o.getClass() && (student.getFirstYear() + 4) <= year) {
-                return student;
+        
+            
+         // avoimen amkin opiskelijalla ei ole valmistumisvuotta
+            for (Student student : students) {
+                if (student.getClass() != o.getClass() && (student.getFirstYear() + 4) <= year) {
+                    graduatedStudents.add(student);
+                }
             }
-        }
-        return null; // Jos ei löydy, palauttaa null
+
+            return new ArrayList<>(graduatedStudents);
     }
 
     public Student getAllDayStudents() {
@@ -126,10 +130,15 @@ public class ProjectService {
         averageAge = ages / students.size();
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
+        try {
 
-        data.put("average age", nf.format(averageAge));
+            data.put("average age", nf.format(averageAge));
+            return data;
 
-        return data;
+        } catch (IllegalArgumentException e) {
+            data.put("average age", null);
+            return data;
+        }
     }
 
     public boolean updateStudentName(Student student) {
@@ -151,5 +160,6 @@ public class ProjectService {
         } else {
             return false;
         }
+
     }
 }

@@ -33,32 +33,29 @@ public class ProjectRestController {
     // katso luentotallenne 25 kohta 27.00 (tee ensin saman luennon ohjeilla service
     // luokka valmiiksi)
 
-    // Hae kaikki opiskelijat
+   
     @GetMapping("/students")
     public List<Student> getStudents() {
-        return pc.getAllStudents();// kutsutaan service-luokan metodia
+        return pc.getAllStudents();
     }
 
-    // Hae kaikki päiväopiskelijat
     @GetMapping("/daystudents")
     public Student getDayStudents() {
         return pc.getAllDayStudents();
     }
 
-    // Hae kaikki monimuotoopiskelijat
     @GetMapping("/blendedstudents")
     public Student getBlendedStudents() {
         return pc.getAllBlendedStudents();
     }
 
-    // Hae kaikki avoimen amkin opiskelijat
     @GetMapping("/ouasstudents")
     public Student getOuasStudents() {
         return pc.getAllOuasStudents();
     }
-
+    //haetaan annettuun vuoteen mennessä valmistuneet opiskelijat
     @GetMapping("/graduatedstudents/{year}")
-    public Student getGraduatedStudents(@PathVariable int year) {
+    public List<Student> getGraduatedStudents(@PathVariable int year) {
         return pc.getGraduatedStudents(year);
     }
 
@@ -68,7 +65,6 @@ public class ProjectRestController {
     }
 
     // Hae yksi opiskelija opiskelijanumerolla
-
     @GetMapping("/student/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
         Student s = pc.getStudentById(id);
@@ -117,8 +113,12 @@ public class ProjectRestController {
 
     @DeleteMapping("/deletestudent")
     public String deleteStudent(@RequestBody Student student) {
-        pc.removeStudent(student.getStudentId());
-        return "Product removed";
+        if(pc.removeStudent(student.getStudentId())==true){
+        return "Student removed";
+        }
+        else {
+            return "Couldn't remove student";
+        }
     }
 
 }
