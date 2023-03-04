@@ -40,17 +40,17 @@ public class ProjectRestController {
     }
 
     @GetMapping("/daystudents")
-    public Student getDayStudents() {
+    public List<Student> getDayStudents() {
         return pc.getAllDayStudents();
     }
 
     @GetMapping("/blendedstudents")
-    public Student getBlendedStudents() {
+    public List<Student> getBlendedStudents() {
         return pc.getAllBlendedStudents();
     }
 
     @GetMapping("/ouasstudents")
-    public Student getOuasStudents() {
+    public List<Student> getOuasStudents() {
         return pc.getAllOuasStudents();
     }
     //haetaan annettuun vuoteen mennessä valmistuneet opiskelijat

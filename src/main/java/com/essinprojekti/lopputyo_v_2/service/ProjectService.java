@@ -84,34 +84,37 @@ public class ProjectService {
             return new ArrayList<>(graduatedStudents);
     }
 
-    public Student getAllDayStudents() {
+    public List<Student> getAllDayStudents() {
+        List<Student> dayStudents = new ArrayList<>();
         DayLearningStudent d = new DayLearningStudent();
         for (Student student : students) {
             if (student.getClass() == d.getClass()) {
-                return student;
+                dayStudents.add(student);
             }
         }
-        return null;
+        return new ArrayList<>(dayStudents);
     }
 
-    public Student getAllBlendedStudents() {
+    public List<Student> getAllBlendedStudents() {
+        List<Student> blendedStudents = new ArrayList<>();
         BlendedLearningStudent b = new BlendedLearningStudent();
         for (Student student : students) {
             if (student.getClass() == b.getClass()) {
-                return student;
+                blendedStudents.add(student);
             }
         }
-        return null;
+        return new ArrayList<>(blendedStudents);
     }
 
-    public Student getAllOuasStudents() {
+    public List<Student> getAllOuasStudents() {
+        List<Student> OuasStudents = new ArrayList<>();
         OpenUasStudent o = new OpenUasStudent();
         for (Student student : students) {
             if (student.getClass() == o.getClass()) {
-                return student;
+                OuasStudents.add(student);
             }
         }
-        return null;
+        return new ArrayList<>(OuasStudents);
     }
 
     public Map<String, Object> getBasicInfo() {
