@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.essinprojekti.lopputyo_v_2.data.BlendedLearningStudent;
+import com.essinprojekti.lopputyo_v_2.data.Course;
 import com.essinprojekti.lopputyo_v_2.data.DayLearningStudent;
 import com.essinprojekti.lopputyo_v_2.data.OpenUasStudent;
 import com.essinprojekti.lopputyo_v_2.data.Student;
@@ -54,7 +55,7 @@ public class ProjectRestController {
     public ResponseEntity<List<Student>> getGraduatedStudents(@PathVariable int year) {
         List <Student> gS = pc.getGraduatedStudents(year);
         if(gS.size() != 0){
-            return new ResponseEntity<>(pc.getGraduatedStudents(year), HttpStatus.OK);
+            return new ResponseEntity<>(gS, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);   
     }
@@ -121,4 +122,48 @@ public class ProjectRestController {
         }
     }
 
+    @PostMapping("/addcourse")
+    public String addCourse(@RequestBody Course course) {
+        if (pc.addCourse(course) == true) {
+            return "Course added";
+        }
+        return "Something went wrong!";
+
+    }
+
+    @PostMapping("/studenttocourse/{id}")
+    public String addStudentToCourse(@RequestBody Student student, @PathVariable int id) {
+        if (pc.addStudentToCourse(student, id) == true) {
+            return "Student added to course";
+        }
+        return "Something went wrong!";
+
+    }
+
+
+    @GetMapping("/courses")
+    public List<Course> getAllCourses() {
+        return pc.getAllCourses();
+    }
+
+    @GetMapping("/course/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable int id) {
+        Course c = pc.getCourseById(id);
+        if (c != null) {
+            return new ResponseEntity<>(c, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getstudents/{id}")
+    public ResponseEntity<List<Student>> getCourseStudents(@PathVariable int id) {
+        List <Student> cS = pc.getCourseStudents(id);
+        if(cS.size() != 0){
+            return new ResponseEntity<>(cS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+    }
+
+    //Lisää remove Course ja jokin päivitys Course luokkaan
 }

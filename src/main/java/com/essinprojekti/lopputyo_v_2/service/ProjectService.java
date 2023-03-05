@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.essinprojekti.lopputyo_v_2.data.BlendedLearningStudent;
+import com.essinprojekti.lopputyo_v_2.data.Course;
 import com.essinprojekti.lopputyo_v_2.data.DayLearningStudent;
 import com.essinprojekti.lopputyo_v_2.data.OpenUasStudent;
 import com.essinprojekti.lopputyo_v_2.data.Student;
@@ -17,6 +18,7 @@ import com.essinprojekti.lopputyo_v_2.data.Student;
 public class ProjectService {
 
     private List<Student> students = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
 
     public ProjectService() {
         // luodaan valmiiksi opiskelijoita
@@ -26,6 +28,7 @@ public class ProjectService {
         students.add(new OpenUasStudent("Reijo", 45, 635763, 2014));
         students.add(new OpenUasStudent("Anja", 41, 6546546, 1998));
         students.add(new OpenUasStudent("Tuula", 37, 45677, 2009));
+        courses.add(new Course(656565, "Web-ohjelmointi", 2));
     }
 
     public boolean addDayLearningStudent(DayLearningStudent s) {
@@ -191,4 +194,62 @@ public class ProjectService {
         }
 
     }
+
+    public boolean addCourse(Course c) {
+        try {
+            courses.add(c);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean addStudentToCourse(Student s, int id) {
+        Student student = getStudentById(s.getStudentId());
+        for (Course course : courses) {
+            if(course.getCourseId()==id && student != null){
+                course.setCourseStudents(student);
+                return true;
+            }
+        } 
+        return false;
+    }
+
+    public List<Course> getAllCourses() {
+        return new ArrayList<>(courses); // Luodaan kopio students-listasta, jotta käyttäjä ei pääse käsiksi suoraan
+                                          // alkuperäiseen students-listaan
+    }
+
+    public Course getCourseById(int id) {
+        for (Course course : courses) {
+            if (course.getCourseId() == id) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public List<Student> getCourseStudents(int id) {
+        for (Course course : courses) {
+            if (course.getCourseId() == id) {
+                return course.getCourseStudents();
+            }
+        }
+        return null;
+    }
+
+    //Lisää put toiminto
+
+    public boolean removeCourse(int id) {
+        Course c = getCourseById(id);
+
+        if (c != null) {
+            return courses.remove(c);
+        } else {
+            return false;
+        }
+
+    }
+
+
 }
