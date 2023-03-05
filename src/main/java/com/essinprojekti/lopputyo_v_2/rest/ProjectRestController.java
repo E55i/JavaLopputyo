@@ -30,10 +30,6 @@ public class ProjectRestController {
         this.pc = pc;
     }
 
-    // katso luentotallenne 25 kohta 27.00 (tee ensin saman luennon ohjeilla service
-    // luokka valmiiksi)
-
-   
     @GetMapping("/students")
     public List<Student> getStudents() {
         return pc.getAllStudents();
@@ -54,9 +50,13 @@ public class ProjectRestController {
         return pc.getAllOuasStudents();
     }
     //haetaan annettuun vuoteen mennessä valmistuneet opiskelijat
-    @GetMapping("/graduatedstudents/{year}")
-    public List<Student> getGraduatedStudents(@PathVariable int year) {
-        return pc.getGraduatedStudents(year);
+    @GetMapping("/graduatedstudents/{year}") 
+    public ResponseEntity<List<Student>> getGraduatedStudents(@PathVariable int year) {
+        List <Student> gS = pc.getGraduatedStudents(year);
+        if(gS.size() != 0){
+            return new ResponseEntity<>(pc.getGraduatedStudents(year), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);   
     }
 
     @GetMapping("/data")
@@ -75,16 +75,16 @@ public class ProjectRestController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/dl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
+    @PostMapping("/dl_student") 
     public String addDayLearningStudent(@RequestBody DayLearningStudent student) {
         if (pc.addDayLearningStudent(student) == true) {
             return "Day learning student added";
         }
-        return "Something went wrong!";// katso myös luento 25 kohta 30.15, virheen hallinnasta
+        return "Something went wrong!";
 
     }
 
-    @PostMapping("/bl_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
+    @PostMapping("/bl_student") 
     public String addBlendedLearningStudent(@RequestBody BlendedLearningStudent student) {
 
         if (pc.addBlendedLearningStudent(student) == true) {
@@ -93,7 +93,7 @@ public class ProjectRestController {
         return "Something went wrong!";
     }
 
-    @PostMapping("/oa_student") // JOS ON AIKAA NIIN KATSO LUENTO 25 kohta 29 ja tee tämä Response entitytllä
+    @PostMapping("/oa_student") 
     public String addOpenUasStudent(@RequestBody OpenUasStudent student) {
 
         if (pc.addOpenUasStudent(student) == true) {

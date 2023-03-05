@@ -121,10 +121,36 @@ public class ProjectService {
 
         Map<String, Object> data = new HashMap<>();
 
-        data.put("count", students.size());
+        data.put("Number of students", students.size());
 
         double ages = 0;
         double averageAge = 0;
+
+        int dStudents =0;
+        int bStudents =0;
+        int oStudents =0;
+
+        for (Student student : students) {
+            DayLearningStudent d = new DayLearningStudent();
+            BlendedLearningStudent b = new BlendedLearningStudent();
+            OpenUasStudent o = new OpenUasStudent();
+
+            if(student.getClass() == d.getClass()){
+                dStudents += 1;
+            }
+
+            else if (student.getClass() == b.getClass()){
+                bStudents +=1;
+            }
+
+            else if (student.getClass() == o.getClass()){
+                oStudents +=1;
+            }            
+        }
+
+        data.put("Day learning students", dStudents);
+        data.put("Blended learning students", bStudents);
+        data.put("Open UAS students", oStudents);
 
         for (Student student : students) {
             ages += student.getAge();
