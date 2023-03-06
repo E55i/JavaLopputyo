@@ -1,8 +1,7 @@
 package com.essinprojekti.lopputyo_v_2.data;
 
-//tee tälle aliluokat päiväopsikelija, monimuoto-opiskelija ja avoimen opiskelija
 public class Student {
-    // muuttujat
+    
     private String name;
     private double age;
     private int studentId;

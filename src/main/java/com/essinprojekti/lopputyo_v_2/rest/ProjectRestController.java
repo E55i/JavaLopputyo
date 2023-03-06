@@ -165,5 +165,25 @@ public class ProjectRestController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
     }
 
-    //Lisää remove Course ja jokin päivitys Course luokkaan
+    @PutMapping("/updatecourse")
+    public String updateCourseName(@RequestBody Course course) {
+        if (pc.updateCourseName(course) == true) {
+            return "Name updated!";
+        } else {
+            return "Name couldn't be updated!";
+        }
+    }
+
+    @DeleteMapping("/deletecourse")
+    public String deleteCourse(@RequestBody Course course) {
+        if(pc.removeCourse(course.getCourseId())==true){
+        return "Course removed";
+        }
+        else {
+            return "Couldn't remove course";
+        }
+    }
+    
+
+  
 }

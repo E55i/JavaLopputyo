@@ -21,7 +21,7 @@ public class ProjectService {
     private List<Course> courses = new ArrayList<>();
 
     public ProjectService() {
-        // luodaan valmiiksi opiskelijoita
+        // luodaan valmiiksi opiskelijoita ja kursseja
         students.add(new DayLearningStudent("Essi", 26, 12333, 2022));
         students.add(new DayLearningStudent("Keijo", 55, 65455, 2005));
         students.add(new BlendedLearningStudent("Asko", 27, 65423, 2023));
@@ -29,6 +29,7 @@ public class ProjectService {
         students.add(new OpenUasStudent("Anja", 41, 6546546, 1998));
         students.add(new OpenUasStudent("Tuula", 37, 45677, 2009));
         courses.add(new Course(656565, "Web-ohjelmointi", 2));
+        courses.add(new Course(565656, "Java-ohjelmointi", 4));
     }
 
     public boolean addDayLearningStudent(DayLearningStudent s) {
@@ -216,8 +217,8 @@ public class ProjectService {
     }
 
     public List<Course> getAllCourses() {
-        return new ArrayList<>(courses); // Luodaan kopio students-listasta, jotta käyttäjä ei pääse käsiksi suoraan
-                                          // alkuperäiseen students-listaan
+        return new ArrayList<>(courses); // Luodaan kopio course-listasta, jotta käyttäjä ei pääse käsiksi suoraan
+                                          // alkuperäiseen course-listaan
     }
 
     public Course getCourseById(int id) {
@@ -238,7 +239,16 @@ public class ProjectService {
         return null;
     }
 
-    //Lisää put toiminto
+    public boolean updateCourseName(Course course) {
+        Course c = getCourseById(course.getCourseId());
+
+        if (c != null) {
+            c.setName(course.getName());
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public boolean removeCourse(int id) {
         Course c = getCourseById(id);
